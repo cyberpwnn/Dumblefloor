@@ -1,13 +1,18 @@
+/*
+ * Discord Bot Maker Bot
+ * Version 2.0.1
+ * Robert Borghese
+ */
 
-const DUMBLEFLOOR = {};
-const DiscordJS = DUMBLEFLOOR.DiscordJS = require('discord.js');
+const DBM = {};
+const DiscordJS = DBM.DiscordJS = require('discord.js');
 
 //---------------------------------------------------------------------
 // Bot
 // Contains functions for controlling the bot.
 //---------------------------------------------------------------------
 
-const Bot = DUMBLEFLOOR.Bot = {};
+const Bot = DBM.Bot = {};
 
 Bot.$cmds = {}; // Normal commands
 Bot.$icds = []; // Includes word commands
@@ -223,7 +228,7 @@ Bot.checkRegExps = function(msg) {
 // Contains functions for bot actions.
 //---------------------------------------------------------------------
 
-const Actions = DUMBLEFLOOR.Actions = {};
+const Actions = DBM.Actions = {};
 
 Actions.location = null;
 
@@ -241,8 +246,8 @@ Actions.getLocalFile = function(url) {
 	return require('path').join(process.cwd(), url);
 };
 
-Actions.getDUMBLEFLOOR = function() {
-	return DUMBLEFLOOR;
+Actions.getDBM = function() {
+	return DBM;
 };
 
 Actions.callListFunc = function(list, funcName, args) {
@@ -274,7 +279,7 @@ Actions.getActionVariable = function(name, defaultValue) {
 
 Actions.eval = function(content, cache) {
 	if(!content) return false;
-	const DUMBLEFLOOR = this.getDUMBLEFLOOR();
+	const DBM = this.getDBM();
 	const tempVars = this.getActionVariable.bind(cache.temp);
 	let serverVars = null;
 	if(cache.server) {
@@ -283,8 +288,8 @@ Actions.eval = function(content, cache) {
 	const globalVars = this.getActionVariable.bind(this.global);
 	const msg = cache.msg;
 	const server = cache.server;
-	const client = DUMBLEFLOOR.Bot.bot;
-	const bot = DUMBLEFLOOR.Bot.bot;
+	const client = DBM.Bot.bot;
+	const bot = DBM.Bot.bot;
 	const me = server ? server.me : null;
 	let user = '', member = '', mentionedUser = '', mentionedChannel = '', defaultChannel = '';
 	if(msg) {
@@ -320,7 +325,7 @@ Actions.initMods = function() {
 			this[action.name] = action.action;
 			if(action.mod) {
 				try {
-					action.mod(DUMBLEFLOOR);
+					action.mod(DBM);
 				} catch(e) {
 					console.error(e);
 				}
@@ -500,9 +505,9 @@ Actions.getErrorString = function(data, cache) {
 };
 
 Actions.displayError = function(data, cache, err) {
-	const DUMBLEFLOOR = this.getErrorString(data, cache);
-	console.error(DUMBLEFLOOR + ":\n" + err);
-	Events.onError(DUMBLEFLOOR, err.stack ? err.stack : err, cache);
+	const dbm = this.getErrorString(data, cache);
+	console.error(dbm + ":\n" + err);
+	Events.onError(dbm, err.stack ? err.stack : err, cache);
 };
 
 Actions.getSendTarget = function(type, varName, cache) {
@@ -897,7 +902,7 @@ Actions.executeResults = function(result, data, cache) {
 // Handles the various events that occur.
 //---------------------------------------------------------------------
 
-const Events = DUMBLEFLOOR.Events = {};
+const Events = DBM.Events = {};
 
 let $evts = null;
 
@@ -1030,7 +1035,7 @@ Events.onError = function(text, text2, cache) {
 
 const JIMP = require('jimp');
 
-const Images = DUMBLEFLOOR.Images = {};
+const Images = DBM.Images = {};
 
 Images.getImage = function(url) {
 	if(!url.startsWith('http')) url = Actions.getLocalFile(url);
@@ -1072,7 +1077,7 @@ Images.drawImageOnImage = function(img1, img2, x, y) {
 // Contains functions for file management.
 //---------------------------------------------------------------------
 
-const Files = DUMBLEFLOOR.Files = {};
+const Files = DBM.Files = {};
 
 Files.data = {};
 Files.writers = {};
@@ -1372,7 +1377,7 @@ Files.initEncryption();
 // Contains functions for voice channel stuff.
 //---------------------------------------------------------------------
 
-const Audio = DUMBLEFLOOR.Audio = {};
+const Audio = DBM.Audio = {};
 
 Audio.ytdl = null;
 try {
