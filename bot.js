@@ -1,13 +1,15 @@
 
-const DMF = {};
-const DiscordJS = DMF.DiscordJS = require('discord.js');
-const Bot = DMF.Bot = {};
+const DBM = {};
+const DiscordJS = DBM.DiscordJS = require('discord.js');
+
+
+const Bot = DBM.Bot = {};
 
 Bot.$cmds = {};
-Bot.$icds = []; 
-Bot.$regx = []; 
-Bot.$anym = []; 
-Bot.$evts = {}; 
+Bot.$icds = [];
+Bot.$regx = [];
+Bot.$anym = [];
+Bot.$evts = {};
 
 Bot.bot = null;
 
@@ -211,21 +213,11 @@ Bot.checkRegExps = function(msg) {
 		}
 	}
 };
-
-//---------------------------------------------------------------------
-// Actions
-// Contains functions for bot actions.
-//---------------------------------------------------------------------
-
-const Actions = DMF.Actions = {};
-
+const Actions = DBM.Actions = {};
 Actions.location = null;
-
 Actions.server = {};
 Actions.global = {};
-
 Actions.timeStamps = [];
-
 Actions.exists = function(action) {
 	if(!action) return false;
 	return typeof(this[action]) === 'function';
@@ -235,8 +227,8 @@ Actions.getLocalFile = function(url) {
 	return require('path').join(process.cwd(), url);
 };
 
-Actions.getDMF = function() {
-	return DMF;
+Actions.getDBM = function() {
+	return DBM;
 };
 
 Actions.callListFunc = function(list, funcName, args) {
@@ -268,7 +260,7 @@ Actions.getActionVariable = function(name, defaultValue) {
 
 Actions.eval = function(content, cache) {
 	if(!content) return false;
-	const DMF = this.getDMF();
+	const DBM = this.getDBM();
 	const tempVars = this.getActionVariable.bind(cache.temp);
 	let serverVars = null;
 	if(cache.server) {
@@ -277,8 +269,8 @@ Actions.eval = function(content, cache) {
 	const globalVars = this.getActionVariable.bind(this.global);
 	const msg = cache.msg;
 	const server = cache.server;
-	const client = DMF.Bot.bot;
-	const bot = DMF.Bot.bot;
+	const client = DBM.Bot.bot;
+	const bot = DBM.Bot.bot;
 	const me = server ? server.me : null;
 	let user = '', member = '', mentionedUser = '', mentionedChannel = '', defaultChannel = '';
 	if(msg) {
@@ -314,7 +306,7 @@ Actions.initMods = function() {
 			this[action.name] = action.action;
 			if(action.mod) {
 				try {
-					action.mod(DMF);
+					action.mod(DBM);
 				} catch(e) {
 					console.error(e);
 				}
@@ -494,9 +486,9 @@ Actions.getErrorString = function(data, cache) {
 };
 
 Actions.displayError = function(data, cache, err) {
-	const DMF = this.getErrorString(data, cache);
-	console.error(DMF + ":\n" + err);
-	Events.onError(DMF, err.stack ? err.stack : err, cache);
+	const dbm = this.getErrorString(data, cache);
+	console.error(dbm + ":\n" + err);
+	Events.onError(dbm, err.stack ? err.stack : err, cache);
 };
 
 Actions.getSendTarget = function(type, varName, cache) {
@@ -886,12 +878,9 @@ Actions.executeResults = function(result, data, cache) {
 	}
 };
 
-//---------------------------------------------------------------------
-// Events
-// Handles the various events that occur.
-//---------------------------------------------------------------------
 
-const Events = DMF.Events = {};
+
+const Events = DBM.Events = {};
 
 let $evts = null;
 
@@ -1017,14 +1006,9 @@ Events.onError = function(text, text2, cache) {
 	}
 };
 
-//---------------------------------------------------------------------
-// Images
-// Contains functions for image management.
-//---------------------------------------------------------------------
-
 const JIMP = require('jimp');
 
-const Images = DMF.Images = {};
+const Images = DBM.Images = {};
 
 Images.getImage = function(url) {
 	if(!url.startsWith('http')) url = Actions.getLocalFile(url);
@@ -1060,13 +1044,7 @@ Images.drawImageOnImage = function(img1, img2, x, y) {
 		}
 	}
 };
-
-//---------------------------------------------------------------------
-// Files
-// Contains functions for file management.
-//---------------------------------------------------------------------
-
-const Files = DMF.Files = {};
+const Files = DBM.Files = {};
 
 Files.data = {};
 Files.writers = {};
@@ -1084,7 +1062,7 @@ Files.dataFiles = [
 Files.startBot = function() {
 	const fs = require('fs');
 	const path = require('path');
-	if(process.env['IsDiscordBotDumblefloorTest'] === 'true') {
+	if(process.env['IsDiscordBotdumblefloorTest'] === 'true') {
 		Actions.location = process.env['ActionsDirectory'];
 		this.initBotTest();
 	} else if(process.argv.length >= 3 && fs.existsSync(process.argv[2])) {
@@ -1096,7 +1074,7 @@ Files.startBot = function() {
 		Actions.initMods();
 		this.readData(Bot.init.bind(Bot));
 	} else {
-		console.error('Please copy the "Actions" folder from the Discord Bot Dumblefloor directory to this bot\'s directory: \n' + Actions.location);
+		console.error('Please copy the "Actions" folder from the Discord Bot dumblefloor directory to this bot\'s directory: \n' + Actions.location);
 	}
 };
 
@@ -1157,7 +1135,7 @@ Files.saveData = function(file, callback) {
 
 Files.initEncryption = function() {
 	try {
-		this.password = require('discord-bot-Dumblefloor');
+		this.password = require('discord-bot-dumblefloor');
 	} catch(e) {
 		this.password = '';
 	}
@@ -1361,12 +1339,7 @@ Files.restoreUser = function(value, bot) {
 
 Files.initEncryption();
 
-//---------------------------------------------------------------------
-// Audio
-// Contains functions for voice channel stuff.
-//---------------------------------------------------------------------
-
-const Audio = DMF.Audio = {};
+const Audio = DBM.Audio = {};
 
 Audio.ytdl = null;
 try {
@@ -1487,10 +1460,6 @@ Audio.playYt = function(url, options, id) {
 	return true;
 };
 
-//---------------------------------------------------------------------
-// GuildMember
-//---------------------------------------------------------------------
-
 const GuildMember = DiscordJS.GuildMember;
 
 GuildMember.prototype.unban = function(server, reason) {
@@ -1540,10 +1509,6 @@ GuildMember.prototype.convertToString = function() {
 	return `mem-${this.id}_s-${this.guild.id}`;
 };
 
-//---------------------------------------------------------------------
-// User
-//---------------------------------------------------------------------
-
 const User = DiscordJS.User;
 
 User.prototype.data = GuildMember.prototype.data;
@@ -1554,9 +1519,6 @@ User.prototype.convertToString = function() {
 	return `usr-${this.id}`;
 };
 
-//---------------------------------------------------------------------
-// Guild
-//---------------------------------------------------------------------
 
 const Guild = DiscordJS.Guild;
 
@@ -1619,48 +1581,31 @@ Guild.prototype.convertToString = function() {
 	return `s-${this.id}`;
 };
 
-//---------------------------------------------------------------------
-// Message
-//---------------------------------------------------------------------
 
 DiscordJS.Message.prototype.convertToString = function() {
 	return `msg-${this.id}_c-${this.channel.id}`;
 };
 
-//---------------------------------------------------------------------
-// TextChannel
-//---------------------------------------------------------------------
 
 DiscordJS.TextChannel.prototype.convertToString = function() {
 	return `tc-${this.id}`;
 };
 
-//---------------------------------------------------------------------
-// VoiceChannel
-//---------------------------------------------------------------------
 
 DiscordJS.VoiceChannel.prototype.convertToString = function() {
 	return `vc-${this.id}`;
 };
 
-//---------------------------------------------------------------------
-// Role
-//---------------------------------------------------------------------
 
 DiscordJS.Role.prototype.convertToString = function() {
 	return `r-${this.id}_s-${this.guild.id}`;
 };
 
-//---------------------------------------------------------------------
-// Emoji
-//---------------------------------------------------------------------
 
 DiscordJS.Emoji.prototype.convertToString = function() {
 	return `e-${this.id}`;
 };
 
-//---------------------------------------------------------------------
-// Start Bot
-//---------------------------------------------------------------------
+-------------------------------------------------------------------
 
 Files.startBot();

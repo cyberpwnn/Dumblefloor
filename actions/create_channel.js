@@ -123,7 +123,6 @@ action: function(cache) {
 	const server = cache.server;
 	if(server && server.createChannel) {
 		const name = this.evalMessage(data.channelName, cache);
-		const catid = this.evalMessage(data.categoryID, cache);
 		const storage = parseInt(data.storage);
 		server.createChannel(name, 'text').then(function(channel) {
 			const channelData = {};
@@ -134,8 +133,8 @@ action: function(cache) {
 				channelData.topic = this.evalMessage(data.topic, cache);
 			}
 			channel.edit(channelData);
-			if(catid) {
-				channel.setParent(catid);
+			if(data.categoryID) {
+				channel.setParent(data.categoryID);
 			}
 			const varName = this.evalMessage(data.varName, cache);
 			this.storeValue(channel, storage, varName, cache);

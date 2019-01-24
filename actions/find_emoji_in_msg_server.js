@@ -123,10 +123,10 @@ module.exports = {
 		let result;
 		switch(info) {
 			case 0:
-				result = msg.guild.emojis.find(e => e.id === find);
+				result = msg.guild.emojis.find('id', find);
 				break;
 			case 1:
-				result = msg.guild.emojis.find(e => e.name === find);
+				result = msg.guild.emojis.find('name', find);
 				break;
 			default:
 				break;

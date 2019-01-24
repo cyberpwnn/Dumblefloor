@@ -121,7 +121,6 @@ init: function() {
 action: function(cache) {
 	const data = cache.actions[cache.index];
 	const server = cache.server;
-	const catid = this.evalMessage(data.categoryID, cache);
 	if(server && server.createChannel) {
 		const name = this.evalMessage(data.channelName, cache);
 		const storage = parseInt(data.storage);
@@ -134,8 +133,8 @@ action: function(cache) {
 				channelData.userLimit = parseInt(this.evalMessage(data.userLimit, cache));
 			}
 			channel.edit(channelData);
-			if(catid) {
-				channel.setParent(catid);
+			if(data.categoryID) {
+				channel.setParent(data.categoryID);
 			}
 			const varName = this.evalMessage(data.varName, cache);
 			this.storeValue(channel, storage, varName, cache);
