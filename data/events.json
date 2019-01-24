@@ -1,1 +1,1 @@
-[null]
+[null,{"name":"MessageRegister","temp":"","event-type":"0","_id":"ElFbF","actions":[{"info":"1","find":"${member}","storage":"1","varName":"Member","name":"Find Member"},{"channel":"4","varName":"","message":"${tempVars(\"Member\")}","storage":"0","varName2":"","name":"Send Message"}]}]
