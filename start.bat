@@ -1,6 +1,6 @@
 @ECHO off
 
-Title Tickety
+Title Dumblefloor
 
 :start
 node bot.js
