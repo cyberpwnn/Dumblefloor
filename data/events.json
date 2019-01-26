@@ -1,1 +1,1 @@
-[null]
+[null,{"name":"Welcome chat onstart","temp":"","event-type":"1","_id":"NmrNq","actions":[{"info":"0","find":"444430888789344256","storage":"2","varName":"SERVERWELCOMECHAT","name":"Find Channel"},{"tosend":"Logged the Main chat to a variable ${serverVars(\"SERVERWELCOMECHAT\")}","name":"Send Message to Console"}]}]
